@@ -46,7 +46,7 @@ descriptors:
         persistent: true
     containers:
       sink:
-        image: ghcr.io/streamx-hub/streamx-rag-service:1.0.0-jvm
+        image: ghcr.io/streamx-hub/streamx-rag-service:1.0.1-jvm
         incoming:
           resources:
             initState: replay
