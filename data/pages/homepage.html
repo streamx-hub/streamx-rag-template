@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  [@cms.page /]
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
   <meta name="description" content="This example presents how to change static html files located on your local into pages available via StreamX">
-  <link rel="stylesheet" href="../web-resources/css/streamx.css" type="text/css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="m-0 flex flex-col min-h-screen">
 <header>
@@ -14,11 +13,8 @@
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="relative flex sm:h-16 items-center justify-between">
         <div class="flex flex-1 items-center justify-center sm:items-center flex-col sm:flex-row sm:justify-between flex-wrap sm:flex-nowrap">
-          [#assign rootNode = cmsfn.contentByPath("/index")]
-          [#assign blogNode = cmsfn.contentByPath("/blog")]
-          [#assign productsNode = cmsfn.contentByPath("/products")]
           <div class="flex flex-shrink-0 items-center">
-            <a href="${cmsfn.link(rootNode)}" class="px-3 py-2"><span class="text-indigo-600 font-semibold">StreamX </span>&#65372; HTML</a>
+            <a href="/" class="px-3 py-2"><span class="text-indigo-600 font-semibold">StreamX </span>&#65372; HTML</a>
           </div>
           <div class="sm:ml-6 flex flex-wrap sm:flex-nowrap">
             <div class="flex space-x-4 flex-wrap sm:flex-nowrap sm:ml-0">
@@ -32,7 +28,22 @@
 </header>
 
 <main class="flex-1">
-  [@cms.area name="main"/]
+  <div class="px-6 pt-10 lg:px-8">
+    <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+          RAG Integration Demo with StreamX
+        </h1>
+
+        <p class="mt-6 text-lg leading-8 text-gray-600">
+          This page is a demonstration of Retrieval-Augmented Generation (RAG) integrated with StreamX.
+          Use the chatbot in the bottom-right corner to explore and retrieve information about available products in real time.
+        </p>
+        <div class="mt-10 flex items-center justify-center gap-x-6">
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 
 <footer>

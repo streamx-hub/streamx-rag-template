@@ -1,0 +1,21 @@
+# Crash log files
+crash.log
+crash.*.log
+
+### IntelliJ IDEA ###
+.idea/*
+*.iws
+*.iml
+*.ipr
+
+### Mac OS ###
+.DS_Store
+
+# Ignore user plaintext secrets
+/mesh/secrets/plaintext/*.properties
+
+# Ignore generated files
+/target
+**/repository
+/mesh/repository/
+/mesh/secrets/generated/

@@ -13,61 +13,6 @@ descriptors:
         outgoing:
           relayed-events: {}
 
-  json-aggregator:
-    type: processing
-    volumes:
-      rocksdb:
-        size: 5Gi
-    containers:
-      processor:
-        image: ghcr.io/streamx-com/streamx-blueprints/json-aggregator:3.0.18-native
-        incoming:
-          data: {}
-          multivalued-data: {}
-        outgoing:
-          aggregated-data: {}
-          aggregated-multivalued-data: {}
-        autoRef:
-          - from: data
-            to: data-state
-            using: sync-state
-          - from: multivalued-data
-            to: multivalued-data-state
-            using: sync-state
-        volumes:
-          - rocksdb:/var/lib/rocksdb
-
-  rendering-engine:
-    type: processing
-    volumes:
-      rocksdb:
-        size: 5Gi
-    containers:
-      processor:
-        image: ghcr.io/streamx-com/streamx-blueprints/rendering-engine:3.0.18-native
-        incoming:
-          data: {}
-          renderers: {}
-          rendering-contexts: {}
-        outgoing:
-          pages: {}
-          fragments: {}
-        autoRef:
-          - from: outgoing-rendering-requests
-            to: incoming-rendering-requests
-            using: internal-relay
-          - from: data
-            to: data-state
-            using: sync-state
-          - from: renderers
-            to: renderers-state
-            using: sync-state
-          - from: rendering-contexts
-            to: rendering-contexts-state
-            using: sync-state
-        volumes:
-          - rocksdb:/var/lib/rocksdb
-
   web-server-sink:
     type: edge
     volumes:
@@ -160,14 +105,6 @@ sources:
         produces:
           - com.streamx.blueprints.data.published.v1
           - com.streamx.blueprints.data.unpublished.v1
-      - ref: inbox.renderers
-        produces:
-          - com.streamx.blueprints.renderer.published.v1
-          - com.streamx.blueprints.renderer.unpublished.v1
-      - ref: inbox.rendering-contexts
-        produces:
-          - com.streamx.blueprints.rendering-context.published.v1
-          - com.streamx.blueprints.rendering-context.unpublished.v1
 
 ingestion:
   rest-ingestion:
@@ -185,6 +122,7 @@ processing:
         outgoing:
           relayed-events:
             ref: outbox.pages
+
   web-resources-relay:
     descriptor: relay
     containers:
@@ -202,46 +140,10 @@ processing:
       service:
         incoming:
           events:
-            ref: relay.aggregated-data
+            ref: inbox.data
         outgoing:
           relayed-events:
             ref: outbox.data
-
-
-  json-aggregator:
-    descriptor: json-aggregator
-    containers:
-      processor:
-        incoming:
-          data:
-            ref: inbox.data
-          multivalued-data:
-            ref: inbox.data
-        outgoing:
-          aggregated-data:
-            ref: relay.aggregated-data
-          aggregated-multivalued-data:
-            ref: inbox.data
-        environmentFrom:
-          configs:
-            - json-aggregator.properties
-
-  rendering-engine:
-    descriptor: rendering-engine
-    containers:
-      processor:
-        incoming:
-          data:
-            ref: relay.aggregated-data
-          renderers:
-            ref: inbox.renderers
-          rendering-contexts:
-            ref: inbox.rendering-contexts
-        outgoing:
-          pages:
-            ref: outbox.pages
-          fragments:
-            ref: outbox.fragments
 
 edge:
   web-server-sink:
