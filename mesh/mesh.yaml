@@ -152,7 +152,7 @@ edge:
       sink:
         incoming:
           resources:
-            ref: outbox.pages,outbox.fragments,outbox.web-resources
+            ref: outbox.pages,outbox.web-resources
         environmentFrom:
           configs:
             - web-server-sink.properties
