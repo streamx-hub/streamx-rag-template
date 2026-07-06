@@ -1,0 +1,14 @@
+global:
+  services:
+    edge:
+      openai-rag-sink:
+        stateful: true
+        replicas: 2
+      web-server-sink:
+        stateful: true
+        replicas: 2
+clusters:
+  eu-west-par-processing:
+    enabled: true
+  eu-west-par-edge:
+    enabled: true
