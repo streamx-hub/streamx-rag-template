@@ -1,5 +1,3 @@
-// TODO: Add function that first sorts fields in exact order
-
 export function formatAiOutput(content, formattersOverride) {
     if (typeof formattersOverride === "function") {
         return formattersOverride(content);
@@ -20,8 +18,14 @@ export function formatAiOutput(content, formattersOverride) {
     }
 
     if (typeof content === "object") {
-        return Object.entries(content).map(([key, value]) => {
+        const itemsOrder = Array.isArray(formattersOverride?._order) ? formattersOverride?._order : Object.keys(content);
+
+        return itemsOrder.map((key) => {
+            if (typeof key !== "string") return '';
+
+            const value = content[key];
             const newFormatters = key in (formattersOverride ?? {}) ? formattersOverride[key] : null;
+
             return formatAiOutput(value, newFormatters);
         }).join('');
     }

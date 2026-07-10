@@ -13,8 +13,7 @@ function formatMoney(
 export const defaultProductsFormatter = {
     message: (v) => `${v}\n\n`,
     products: {
-        id: () => '',
-        name: () => '',
+        _order: ['sku', 'label', 'slug', 'price', 'primaryImage', 'categories', 'attributes', 'quantity', 'description'],
         slug: (slug) => `slug: <a href="${slug}">/${slug}</a><br />`,
         quantity: (v) => `Quantity: ${v}\n`,
         label: (v) => `<strong>${v}</strong><br />`,
