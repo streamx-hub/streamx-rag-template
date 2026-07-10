@@ -1,3 +1,6 @@
+import { formatAiOutput } from './formatter/formatAiOutput.js';
+import { defaultProductsFormatter } from './formatter/defaultProductsFormatter.js';
+
 /**
  * <streamx-chat> — Web Component
  *
@@ -498,7 +501,7 @@ class StreamxChat extends HTMLElement {
     try {
       const resp = await fetch(this._apiUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'text/event-stream' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ question: q, sessionId: this._sessionId })
       });
 
@@ -506,27 +509,9 @@ class StreamxChat extends HTMLElement {
 
       this._removeTyping();
       const botBub = this._addMessage('bot', '');
-      let full = '';
-      const reader  = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let buf = '';
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buf += decoder.decode(value, { stream: true });
-        const lines = buf.split('\n');
-        buf = lines.pop();
-        for (const line of lines) {
-          if (line.startsWith('data:')) {
-            full += line.slice(5);
-            const msgs = s.getElementById('messages');
-            botBub.innerHTML = this._md(full) + '<span style="opacity:.35">▍</span>';
-            msgs.scrollTop = msgs.scrollHeight;
-          }
-        }
-      }
-      botBub.innerHTML = this._md(full);
+      const data = await resp.json();
+      botBub.innerHTML = formatAiOutput(data, defaultProductsFormatter);
 
     } catch (err) {
       this._removeTyping();
