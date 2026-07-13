@@ -1,7 +1,7 @@
 function formatMoney(
-    price,
-    locale = 'en-Us',
-    currency = 'USD',
+    price: number,
+    locale: Intl.LocalesArgument = 'en-Us',
+    currency: string = 'USD',
 ) {
     const moneyFormatter = new Intl.NumberFormat(locale, {
         style: 'currency',
@@ -19,7 +19,7 @@ export const defaultProductsFormatter = {
         label: (v) => `<strong>${v}</strong><br />`,
         price: (v) =>
             `Price: <span style="text-decoration: line-through">${formatMoney(v.value)}</span> ${formatMoney(v.discountedValue)}<br/>`,
-        primaryImage: (v) => `<img src="${v.url}" alt="${v.alt}" /><br />`,
+        primaryImage: (v) => `<img src="${v.url}" alt="${v.alt}" width="60" height="60" /><br />`,
         categories: (v) => `Categories: ${v?.map((item) => item?.label)?.join(', ')}\n`,
         attributes: (attributes) =>
             `${attributes?.map((attribute) => {
