@@ -117,6 +117,25 @@ You can decode it to inspect the structure and adapt it to your own data model.
 3. Adjust system prompt for your use case
 4. Extend UI if needed (homepage + chat only)
 
+# Chatbot UI development
+Code used to develop chatbot lives inside `ui-lib` directory and is written in TypeScript. 
+
+## Building UI
+To build the newest changes you need to run:
+
+```
+npm run build
+```
+
+This script compiles and bundles the TypeScript source files from `ui-lib` into a single JavaScript file, saving the output to the `web-resources` directory. From there it can be published.
+
+## Running Unit Tests
+
+We maintain a suite of unit tests specifically designed to verify the behavior of the AI JSON parser. You can execute these tests using:
+```
+npm run test
+```
+
 ---
 
 # Result
