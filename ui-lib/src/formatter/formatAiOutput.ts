@@ -5,9 +5,13 @@ type FormatterObject<T> = {
 };
 
 export type Formatter<T> =
-    T extends Array<infer U>
+    /**
+     * Squared brackets are used to avoid Distributive Conditional Types behavior (so that boolean that is union type of true | false is inferred correctly)
+     * https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types
+     */
+    [T] extends [Array<infer U>]
         ? FormatterFunction<T> | (FormatterObject<U> & { _order?: Array<keyof U & string> })
-        : T extends object
+        : [T] extends [object]
             ? FormatterFunction<T> | (FormatterObject<T> & { _order?: Array<keyof T & string> })
             : FormatterFunction<T>;
 

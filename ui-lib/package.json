@@ -5,8 +5,8 @@
   "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild src/index.ts --bundle --format=esm --target=es2023 --outfile=../data/web-resources/js/index.js"
+    "build": "esbuild src/index.ts --bundle --format=esm --target=es2023 --outfile=../data/web-resources/js/index.js",
+    "test": "vitest"
   },
   "repository": {
     "type": "git",
