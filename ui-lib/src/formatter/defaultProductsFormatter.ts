@@ -60,7 +60,7 @@ export const defaultProductsFormatter: Formatter<ProductsSchema> = {
         label: (v) => `<strong>${v}</strong><br/>`,
         price: (v) =>
             `Price: <span style="text-decoration: line-through">${formatMoney(v.value)}</span> ${formatMoney(v.discountedValue)}<br/>`,
-        primaryImage: (v) => `<img src="${v.url}" alt="${v.alt}" width="60" height="60" /><br/>`,
+        primaryImage: (v) => `<img src="${v.url}" alt="${v.alt}" style="width: 100%; height: 100%; object-fit: contain;" /><br/>`,
         categories: (v) => `Categories: ${v.map((item) => item.label).join(', ')}\n`,
         attributes: (attributes) =>
             `${attributes.map((attribute) => {

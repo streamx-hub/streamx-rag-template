@@ -428,7 +428,7 @@ describe('formatAiOutput', () => {
             '<strong>Folding Table</strong>',
             'slug: <a href="folding-table">/folding-table</a>',
             'Price: <span style="text-decoration: line-through">$49.99</span> $39.99',
-            '<img src="https://example.com/images/folding-table.jpg" alt="Folding Table" width="60" height="60" />',
+            '<img src="https://example.com/images/folding-table.jpg" alt="Folding Table" style="width: 100%; height: 100%; object-fit: contain;" />',
             'Categories: Tables'
         ].join('<br/>');
 
@@ -436,7 +436,7 @@ describe('formatAiOutput', () => {
             '<strong>Coffee Table</strong>',
             'slug: <a href="coffee-table">/coffee-table</a>',
             'Price: <span style="text-decoration: line-through">$89.99</span> $79.99',
-            '<img src="https://example.com/images/coffee-table.jpg" alt="Coffee Table" width="60" height="60" />',
+            '<img src="https://example.com/images/coffee-table.jpg" alt="Coffee Table" style="width: 100%; height: 100%; object-fit: contain;" />',
             'Categories: Tables'
         ].join('<br/>');
 
@@ -444,7 +444,7 @@ describe('formatAiOutput', () => {
             '<strong>Casual Farmhouse Wood Dining Table</strong>',
             'slug: <a href="casual-farmhouse-wood-dining-table">/casual-farmhouse-wood-dining-table</a>',
             'Price: <span style="text-decoration: line-through">$299.99</span> $279.99',
-            '<img src="https://example.com/images/farmhouse-dining-table.jpg" alt="Casual Farmhouse Wood Dining Table" width="60" height="60" />',
+            '<img src="https://example.com/images/farmhouse-dining-table.jpg" alt="Casual Farmhouse Wood Dining Table" style="width: 100%; height: 100%; object-fit: contain;" />',
             'Categories: Tables'
         ].join('<br/>');
 
