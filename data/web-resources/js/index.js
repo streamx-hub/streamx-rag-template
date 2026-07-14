@@ -1,13 +1,12 @@
 // src/formatter/formatAiOutput.ts
 function formatAiOutput(content, formattersOverride) {
+  if (content === null || content === void 0) {
+    return "";
+  }
   if (typeof formattersOverride === "function") {
     return formattersOverride(content);
   }
-  if (typeof content === "string") {
-    return `${content}
-`;
-  }
-  if (typeof content === "number") {
+  if (typeof content === "string" || typeof content === "number" || typeof content === "boolean") {
     return `${content}
 `;
   }
@@ -19,10 +18,10 @@ function formatAiOutput(content, formattersOverride) {
   if (typeof content === "object") {
     const itemsOrder = Array.isArray(formattersOverride?._order) ? formattersOverride?._order : Object.keys(content);
     return itemsOrder.map((key) => {
-      if (typeof key !== "string") return "";
       const value = content[key];
-      const newFormatters = key in (formattersOverride ?? {}) ? formattersOverride[key] : null;
-      return formatAiOutput(value, newFormatters);
+      const formattersObj = formattersOverride || {};
+      const nextFormatter = formattersObj[key];
+      return formatAiOutput(value, nextFormatter);
     }).join("");
   }
   return "";
@@ -48,10 +47,10 @@ var defaultProductsFormatter = {
     label: (v) => `<strong>${v}</strong><br />`,
     price: (v) => `Price: <span style="text-decoration: line-through">${formatMoney(v.value)}</span> ${formatMoney(v.discountedValue)}<br/>`,
     primaryImage: (v) => `<img src="${v.url}" alt="${v.alt}" width="60" height="60" /><br />`,
-    categories: (v) => `Categories: ${v?.map((item) => item?.label)?.join(", ")}
+    categories: (v) => `Categories: ${v.map((item) => item.label).join(", ")}
 `,
-    attributes: (attributes) => `${attributes?.map((attribute) => {
-      return `${attribute?.label}: ${attribute?.values?.map((value) => value?.label).join(", ")}`;
+    attributes: (attributes) => `${attributes.map((attribute) => {
+      return `${attribute.label}: ${attribute.values.map((value) => value.label).join(", ")}`;
     }).join("\n")}
 `
   }

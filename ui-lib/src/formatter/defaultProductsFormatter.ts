@@ -1,3 +1,5 @@
+import type { Formatter } from './formatAiOutput';
+
 function formatMoney(
     price: number,
     locale: Intl.LocalesArgument = 'en-Us',
@@ -10,7 +12,46 @@ function formatMoney(
     return moneyFormatter.format(price);
 }
 
-export const defaultProductsFormatter = {
+interface CategoryItemSchema {
+    id: string;
+    slug: string;
+    name: string;
+    label: string;
+    subcategories: { label: string; value: string }[];
+}
+
+interface AttributeItemSchema {
+    name: string;
+    label: string;
+    values: { label: string; value: string }[];
+}
+
+interface ProductItemSchema {
+    id: string;
+    sku: string;
+    name: string;
+    label: string;
+    description: string;
+    slug: string;
+    quantity: number;
+    price: {
+        value: number;
+        discountedValue: number;
+    },
+    primaryImage: {
+        url: string;
+        alt: string;
+    },
+    categories: CategoryItemSchema[],
+    attributes: AttributeItemSchema[],
+}
+
+export interface ProductsSchema {
+    message: string;
+    products: ProductItemSchema[];
+}
+
+export const defaultProductsFormatter: Formatter<ProductsSchema> = {
     message: (v) => `${v}\n\n`,
     products: {
         _order: ['sku', 'label', 'slug', 'price', 'primaryImage', 'categories', 'attributes', 'quantity', 'description'],
@@ -20,10 +61,10 @@ export const defaultProductsFormatter = {
         price: (v) =>
             `Price: <span style="text-decoration: line-through">${formatMoney(v.value)}</span> ${formatMoney(v.discountedValue)}<br/>`,
         primaryImage: (v) => `<img src="${v.url}" alt="${v.alt}" width="60" height="60" /><br />`,
-        categories: (v) => `Categories: ${v?.map((item) => item?.label)?.join(', ')}\n`,
+        categories: (v) => `Categories: ${v.map((item) => item.label).join(', ')}\n`,
         attributes: (attributes) =>
-            `${attributes?.map((attribute) => {
-                return `${attribute?.label}: ${attribute?.values?.map((value) => value?.label).join(', ')}`;
+            `${attributes.map((attribute) => {
+                return `${attribute.label}: ${attribute.values.map((value) => value.label).join(', ')}`;
             }).join('\n')}\n`
     }
 }

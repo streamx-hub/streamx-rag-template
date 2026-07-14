@@ -1,5 +1,6 @@
 import { formatAiOutput } from './formatter/formatAiOutput';
 import { defaultProductsFormatter } from './formatter/defaultProductsFormatter';
+import type { ProductsSchema } from './formatter/defaultProductsFormatter';
 import { ChatRenderer } from './ChatRenderer';
 
 /**
@@ -234,7 +235,7 @@ export class StreamxChat extends HTMLElement {
       this.removeTyping();
       const botBub = this.addMessage('bot', '');
 
-      const data = await resp.json();
+      const data = await resp.json() as ProductsSchema;
       botBub.innerHTML = formatAiOutput(data, defaultProductsFormatter);
 
     } catch (err) {

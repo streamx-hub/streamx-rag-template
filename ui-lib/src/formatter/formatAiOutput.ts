@@ -1,13 +1,26 @@
-export function formatAiOutput(content, formattersOverride) {
+type FormatterFunction<T> = (value: T) => string;
+
+type FormatterObject<T> = {
+    [K in keyof T]?: Formatter<T[K]>;
+};
+
+export type Formatter<T> =
+    T extends Array<infer U>
+        ? FormatterFunction<T> | (FormatterObject<U> & { _order?: Array<keyof U & string> })
+        : T extends object
+            ? FormatterFunction<T> | (FormatterObject<T> & { _order?: Array<keyof T & string> })
+            : FormatterFunction<T>;
+
+export function formatAiOutput<T>(content: T, formattersOverride?: Formatter<T>): string {
+    if (content === null || content === undefined) {
+        return '';
+    }
+
     if (typeof formattersOverride === "function") {
         return formattersOverride(content);
     }
 
-    if (typeof content === "string") {
-        return `${content}\n`;
-    }
-
-    if (typeof content === "number") {
+    if (typeof content === "string" || typeof content === "number" || typeof content === "boolean") {
         return `${content}\n`;
     }
 
@@ -20,13 +33,12 @@ export function formatAiOutput(content, formattersOverride) {
     if (typeof content === "object") {
         const itemsOrder = Array.isArray(formattersOverride?._order) ? formattersOverride?._order : Object.keys(content);
 
-        return itemsOrder.map((key) => {
-            if (typeof key !== "string") return '';
+        return itemsOrder.map((key: string) => {
+            const value = (content as Record<string, any>)[key];
+            const formattersObj = formattersOverride || {} as Record<string, any>;
+            const nextFormatter = formattersObj[key];
 
-            const value = content[key];
-            const newFormatters = key in (formattersOverride ?? {}) ? formattersOverride[key] : null;
-
-            return formatAiOutput(value, newFormatters);
+            return formatAiOutput(value, nextFormatter);
         }).join('');
     }
 
