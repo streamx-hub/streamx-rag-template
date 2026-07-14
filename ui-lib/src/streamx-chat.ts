@@ -139,7 +139,7 @@ export class StreamxChat extends HTMLElement {
   }
 
   private autoResize(el: EventTarget) {
-    if ((el instanceof HTMLInputElement)) {
+    if ((el instanceof HTMLElement)) {
       el.style.height = 'auto';
       el.style.height = Math.min(el.scrollHeight, 100) + 'px';
       return;
