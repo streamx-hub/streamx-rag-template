@@ -13,6 +13,16 @@ descriptors:
         outgoing:
           relayed-events: {}
 
+  openai-rag-embeds-producer:
+    type: processing
+    containers:
+      processor:
+        image: ghcr.io/streamx-hub/streamx-rag-processing-service:latest-jvm
+        incoming:
+          resources: { }
+        outgoing:
+          embed-events: { }
+
   web-server-sink:
     type: edge
     volumes:
@@ -46,10 +56,10 @@ descriptors:
         persistent: true
     containers:
       sink:
-        image: ghcr.io/streamx-hub/streamx-rag-service:1.0.1-jvm
+        image: ghcr.io/streamx-hub/streamx-rag-edge-service:latest-jvm
         incoming:
-          resources:
-            initState: replay
+          embed-events:
+            initState: delta
         environment:
           STREAMX_POSTGRES_URL: jdbc:postgresql://${STREAMX_SERVICE_ID}.postgres:5432/ragdb
         servicePorts:
@@ -134,16 +144,19 @@ processing:
           relayed-events:
             ref: outbox.web-resources
 
-  data-relay:
-    descriptor: relay
+  openai-rag-embeds-producer:
+    descriptor: openai-rag-embeds-producer
     containers:
-      service:
+      processor:
         incoming:
-          events:
+          resources:
             ref: inbox.data
         outgoing:
-          relayed-events:
+          embed-events:
             ref: outbox.data
+        environmentFrom:
+          secrets:
+            - encrypted/open-ai-rag.properties
 
 edge:
   web-server-sink:
@@ -167,7 +180,7 @@ edge:
     containers:
       sink:
         incoming:
-          resources:
+          embed-events:
             ref: outbox.data
         environmentFrom:
           secrets:

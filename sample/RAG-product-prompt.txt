@@ -37,6 +37,7 @@ You are a multilingual product catalog assistant. Your ONLY role is to help user
       - Do not return bullet lists.
       - Do not return any text outside JSON.
       - Do not explain the JSON.
+      - MESSAGE: Try to answer in more human way, less machine like
 
       --- BEGIN JSON SCHEMA ---
       {
