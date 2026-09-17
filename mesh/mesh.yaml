@@ -17,7 +17,7 @@ descriptors:
     type: processing
     containers:
       processor:
-        image: ghcr.io/streamx-hub/streamx-rag-processing-service:latest-jvm
+        image: ghcr.io/streamx-hub/streamx-rag-processing-service:1.0.2-jvm
         incoming:
           resources: { }
         outgoing:
@@ -56,7 +56,7 @@ descriptors:
         persistent: true
     containers:
       sink:
-        image: ghcr.io/streamx-hub/streamx-rag-edge-service:latest-jvm
+        image: ghcr.io/streamx-hub/streamx-rag-edge-service:1.0.2-jvm
         incoming:
           embed-events:
             initState: delta
