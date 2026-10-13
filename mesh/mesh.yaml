@@ -6,6 +6,7 @@ default:
 descriptors:
   relay:
     type: processing
+    serviceUnits: 0.25
     containers:
       service:
         incoming:
@@ -15,6 +16,7 @@ descriptors:
 
   openai-rag-embeds-producer:
     type: processing
+    serviceUnits: 1.0
     containers:
       processor:
         image: ghcr.io/streamx-hub/streamx-rag-processing-service:1.0.2-jvm
@@ -25,6 +27,7 @@ descriptors:
 
   web-server-sink:
     type: edge
+    serviceUnits: 1.0
     volumes:
       repository-volume:
         size: 20Gi
@@ -50,6 +53,7 @@ descriptors:
 
   openai-rag-sink:
     type: edge
+    serviceUnits: 4.0
     volumes:
       pgvolume:
         size: 20Gi
